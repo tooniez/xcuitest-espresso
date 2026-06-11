@@ -24,6 +24,7 @@ apply_defaults() {
   IOS_SIMULATOR_OS="${IOS_SIMULATOR_OS:-}"
   ANDROID_PACKAGE="${ANDROID_PACKAGE:-com.example.mobileuiautomationdemo}"
   ANDROID_GRADLE_TASK="${ANDROID_GRADLE_TASK:-connectedDebugAndroidTest}"
+  ANDROID_UNIT_GRADLE_TASK="${ANDROID_UNIT_GRADLE_TASK:-testDebugUnitTest}"
   GRADLE_VERSION="${GRADLE_VERSION:-8.7}"
 }
 
