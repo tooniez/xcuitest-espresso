@@ -34,6 +34,16 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    sourceSets {
+        val repoTestData = rootProject.projectDir.parentFile.resolve("test-data")
+        getByName("test") {
+            resources.srcDir(repoTestData)
+        }
+        getByName("androidTest") {
+            resources.srcDir(repoTestData)
+        }
+    }
 }
 
 dependencies {
@@ -46,9 +56,14 @@ dependencies {
     implementation("androidx.test.espresso:espresso-idling-resource:3.7.0")
 
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+    testImplementation("org.json:json:20240303")
+
     androidTestImplementation("androidx.test:core:1.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test:runner:1.7.0")
     androidTestImplementation("androidx.test:rules:1.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 }
