@@ -1,0 +1,17 @@
+{
+  "latitude": 37.7749,
+  "longitude": -122.4194,
+  "generationtime_ms": 0.25,
+  "utc_offset_seconds": -25200,
+  "timezone": "America/Los_Angeles",
+  "timezone_abbreviation": "GMT-7",
+  "elevation": 67.0,
+  "current_units": {
+    "time": "iso8601",
+    "temperature_2m": "°F"
+  },
+  "current": {
+    "time": "2026-06-11T12:00",
+    "temperature_2m": 63.0
+  }
+}
