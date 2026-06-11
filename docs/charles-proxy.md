@@ -180,7 +180,7 @@ If HTTPS bodies are empty or encrypted:
 
 Or launch the app manually, tap **Get Weather**, and watch Charles.
 
-The XCUITest `testGetWeatherShowsSanFranciscoTemperatureInFahrenheit` also triggers the same request.
+For automated live traffic, remove `@Ignore` from `WeatherClientLiveIntegrationTest` and run it on a device/emulator, or tap **Get Weather** manually in the app. UI tests use mocks and do not call Open-Meteo.
 
 ---
 
@@ -249,11 +249,11 @@ cd android && ./gradlew connectedDebugAndroidTest
 
 # Weather test only — good for a focused Charles demo
 cd android && ./gradlew connectedDebugAndroidTest \
-  -Pandroid.testInstrumentationRunnerArguments.class=com.example.mobileuiautomationdemo.MainActivityWeatherEspressoTest
+  -Pandroid.testInstrumentationRunnerArguments.class=com.example.mobileuiautomationdemo.integration.WeatherClientLiveIntegrationTest
 
 # Same single test via adb (app must already be installed)
 adb shell am instrument -w -r \
-  -e class com.example.mobileuiautomationdemo.MainActivityWeatherEspressoTest \
+  -e class com.example.mobileuiautomationdemo.integration.WeatherClientLiveIntegrationTest \
   com.example.mobileuiautomationdemo.test/androidx.test.runner.AndroidJUnitRunner
 ```
 
@@ -301,7 +301,7 @@ xcodebuild test \
   -project ios/DemoApp.xcodeproj \
   -scheme DemoApp \
   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
-  -only-testing:DemoAppUITests/DemoAppUITests/testGetWeatherShowsSanFranciscoTemperatureInFahrenheit \
+  -only-testing:DemoAppTests/WeatherClientIntegrationTests/testFetchCurrentTemperatureFahrenheitUsesStubbedHTTPResponse \
   -resultBundlePath reports/ios/DemoApp.xcresult \
   CODE_SIGNING_ALLOWED=NO
 ```

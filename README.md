@@ -1,6 +1,6 @@
 # Mobile UI Automation Demo
 
-A demonstration project showcasing UI test automation for Android and iOS platforms.
+A demonstration project showcasing mobile test automation for Android and iOS using the **testing pyramid** (unit → integration → UI).
 
 ## Structure
 
@@ -20,67 +20,55 @@ Run `./scripts/scaffold-all.sh` first if `android/` or `ios/` are missing.
 
 ### Android (`android/`)
 
-Standard single-module Gradle layout. **UI tests live in the `androidTest` source set** (instrumented Espresso tests run on a device/emulator).
+Gradle layout with three test layers:
 
 ```
-android/
-├── app/
-│   ├── src/
-│   │   ├── main/                          # App under test
-│   │   │   ├── java/.../MainActivity.kt
-│   │   │   ├── res/layout/activity_main.xml
-│   │   │   └── AndroidManifest.xml
-│   │   └── androidTest/                   # ← Espresso UI tests
-│   │       └── java/.../MainActivityEspressoTest.kt
-│   └── build.gradle.kts                   # Espresso + AndroidX Test deps
-├── gradlew
-├── settings.gradle.kts
-└── build.gradle.kts
+android/app/src/
+├── main/                    # App under test
+├── test/                    # Unit (JVM) — WeatherClient parsing/formatting
+└── androidTest/
+    ├── integration/         # MockWebServer + WeatherClient HTTP
+    └── ui/                  # Espresso smoke tests
 ```
 
-| Item | Location |
-|------|----------|
-| Sample UI test | `android/app/src/androidTest/java/com/example/mobileuiautomationdemo/MainActivityEspressoTest.kt` |
-| Framework | Espresso 3.7 + AndroidX Test (JUnit4, `ActivityScenarioRule`) |
-| Run command | `./scripts/run-android.sh` → `./gradlew connectedDebugAndroidTest` |
-| Reports | HTML under `android/app/build/reports/androidTests/` (see [Reporting](docs/reporting.md)) |
+| Layer | Location | Run |
+|-------|----------|-----|
+| Unit | `app/src/test/.../WeatherClientTest.kt` | `./scripts/run-android-unit.sh` |
+| Integration | `app/src/androidTest/.../integration/` | `./scripts/run-android.sh` (emulator) |
+| UI | `app/src/androidTest/.../ui/` | `./scripts/run-android.sh` (emulator) |
+
+Fixtures load from shared [`test-data/`](test-data/) via Gradle `sourceSets` resources.
 
 ### iOS (`ios/`)
 
-XcodeGen project with separate app and UI-test targets. **UI tests live in the `DemoAppUITests` target** (XCUITest runs on the iOS Simulator).
+XcodeGen project with unit and UI test targets:
 
 ```
 ios/
-├── DemoApp/                    # App under test (SwiftUI)
-│   ├── DemoAppApp.swift
-│   └── ContentView.swift
-├── DemoAppUITests/             # ← XCUITest suite
-│   └── DemoAppUITests.swift
-├── project.yml                 # XcodeGen spec (source of truth for targets)
-└── DemoApp.xcodeproj/          # Generated — do not hand-edit; regenerate with xcodegen
+├── DemoApp/                 # App under test (SwiftUI)
+├── DemoAppTests/            # Unit + integration (XCTest host)
+├── DemoAppUITests/          # UI smoke tests (XCUITest)
+├── project.yml
+└── DemoApp.xcodeproj/       # Regenerate with xcodegen after project.yml edits
 ```
 
-| Item | Location |
-|------|----------|
-| Sample UI test | `ios/DemoAppUITests/DemoAppUITests.swift` |
-| Framework | XCUITest (`XCUIApplication`, `XCTestCase`) |
-| Run command | `./scripts/run-ios.sh` → `xcodebuild test` on simulator |
-| Reports | `reports/ios/DemoApp.xcresult` (Xcode result bundle) |
+| Layer | Location | Run |
+|-------|----------|-----|
+| Unit / integration | `ios/DemoAppTests/` | `./scripts/run-ios-unit.sh` |
+| UI | `ios/DemoAppUITests/` | `./scripts/run-ios.sh` |
 
-Both platforms assert the same demo home screen copy (`Welcome to Mobile UI Demo`, product name, price) and include a **Get Weather** flow that calls Open-Meteo over HTTPS (see [Charles Proxy demo](docs/charles-proxy.md)).
+Both platforms assert the same home screen copy and a **Get Weather** flow. UI tests use mocks (no live API in CI). Live HTTPS is for manual [Charles Proxy](docs/charles-proxy.md) demos — see [Test strategy](docs/test-strategy.md).
 
 ## Network / API demo (Charles Proxy)
 
-Tap **Get Weather** in either app (or run the weather UI tests) to issue a real HTTPS GET to `api.open-meteo.com`. Use [Charles Proxy](docs/charles-proxy.md) on macOS to inspect the request URL, query parameters, JSON response, and timing.
+Tap **Get Weather** in either app to issue a real HTTPS GET to `api.open-meteo.com`. Use [Charles Proxy](docs/charles-proxy.md) on macOS to inspect traffic. Automated UI tests use mocks; run `WeatherClientLiveIntegrationTest` manually on Android for live API checks.
 
-| Platform | Weather UI test |
-|----------|-----------------|
-| Android | `MainActivityWeatherEspressoTest.kt` |
-| iOS | `testGetWeatherShowsSanFranciscoTemperatureInFahrenheit` |
+| Fixture | Purpose |
+|---------|---------|
+| [`test-data/open-meteo-forecast-response.json`](test-data/open-meteo-forecast-response.json) | Unit/integration parsing |
+| [`test-data/weather.json`](test-data/weather.json) | API metadata for Charles docs |
 
-Fixture: [`test-data/weather.json`](test-data/weather.json).
-
-Add new tests alongside the existing files in each platform’s test directory above.
+See [Test strategy](docs/test-strategy.md) for pyramid conventions and CI layout.
 
 ## Quick start
 
@@ -155,8 +143,10 @@ See [docs/getting-started.md](docs/getting-started.md) for prerequisites. See [d
 | `scaffold-android.sh` | Gradle app module + Espresso test |
 | `scaffold-ios.sh` | SwiftUI app + XCUITest + Xcode project |
 | `run-all.sh` | Run Android then iOS; skips unavailable platforms (use `--ios-only` / `--android-only`) |
-| `run-android.sh` | `connectedDebugAndroidTest` |
-| `run-ios.sh` | `xcodebuild test` on simulator |
+| `run-android-unit.sh` | JVM unit tests (`testDebugUnitTest`) |
+| `run-ios-unit.sh` | `DemoAppTests` on simulator |
+| `run-android.sh` | `connectedDebugAndroidTest` (integration + UI) |
+| `run-ios.sh` | `xcodebuild test` on simulator (UI) |
 
 Pass `--force` to scaffold scripts to overwrite generated files.
 

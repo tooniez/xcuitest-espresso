@@ -63,7 +63,7 @@ Run only the weather Espresso test (one HTTPS call — easy to spot in Charles):
 
 ```bash
 cd android && ./gradlew connectedDebugAndroidTest \
-  -Pandroid.testInstrumentationRunnerArguments.class=com.example.mobileuiautomationdemo.MainActivityWeatherEspressoTest
+  -Pandroid.testInstrumentationRunnerArguments.class=com.example.mobileuiautomationdemo.ui.MainActivityWeatherEspressoTest
 ```
 
 Tail errors while Charles SSL proxying is enabled:

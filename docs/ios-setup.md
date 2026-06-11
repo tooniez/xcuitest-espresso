@@ -86,7 +86,7 @@ xcodebuild test \
   -project ios/DemoApp.xcodeproj \
   -scheme DemoApp \
   -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.0' \
-  -only-testing:DemoAppUITests/DemoAppUITests/testGetWeatherShowsSanFranciscoTemperatureInFahrenheit \
+  -only-testing:DemoAppUITests/DemoAppUITests/testGetWeatherShowsMockedSanFranciscoTemperature \
   -resultBundlePath reports/ios/DemoApp.xcresult \
   CODE_SIGNING_ALLOWED=NO
 ```
