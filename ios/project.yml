@@ -1,0 +1,37 @@
+name: DemoApp
+options:
+  bundleIdPrefix: com.example
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+targets:
+  DemoApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: DemoApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.mobileuiautomationdemo
+        INFOPLIST_KEY_CFBundleDisplayName: Mobile UI Demo
+        GENERATE_INFOPLIST_FILE: YES
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+    scheme:
+      testTargets:
+        - DemoAppUITests
+  DemoAppUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: DemoAppUITests
+    dependencies:
+      - target: DemoApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.mobileuiautomationdemo.uitests
+        GENERATE_INFOPLIST_FILE: YES
