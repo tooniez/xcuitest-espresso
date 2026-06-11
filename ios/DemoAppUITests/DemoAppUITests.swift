@@ -16,17 +16,15 @@ final class DemoAppUITests: XCTestCase {
     }
 
     @MainActor
-    func testGetWeatherShowsSanFranciscoTemperatureInFahrenheit() throws {
+    func testGetWeatherShowsMockedSanFranciscoTemperature() throws {
         let app = XCUIApplication()
+        app.launchArguments += ["-MockWeather", "San Francisco: 63°F"]
         app.launch()
 
         app.buttons["get_weather_button"].tap()
 
         let weatherResult = app.staticTexts["weather_result"]
-        XCTAssertTrue(weatherResult.waitForExistence(timeout: 15))
-
-        let summary = weatherResult.label
-        XCTAssertTrue(summary.contains("San Francisco"))
-        XCTAssertNotNil(summary.range(of: #"\d+(\.\d+)?°F"#, options: .regularExpression))
+        XCTAssertTrue(weatherResult.waitForExistence(timeout: 5))
+        XCTAssertEqual(weatherResult.label, "San Francisco: 63°F")
     }
 }
