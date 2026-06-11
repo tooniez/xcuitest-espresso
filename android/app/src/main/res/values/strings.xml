@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mobile UI Demo</string>
+    <string name="welcome_title">Welcome to Mobile UI Demo</string>
+    <string name="product_name">Example Product</string>
+    <string name="product_price">$9.99</string>
+    <string name="get_weather">Get Weather</string>
+    <string name="weather_status_idle">Tap Get Weather to load the forecast.</string>
+    <string name="weather_status_loading">Loading weather…</string>
+    <string name="weather_status_error">Could not load weather</string>
+</resources>
