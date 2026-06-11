@@ -26,3 +26,4 @@ ios/**/Pods/
 ios/**/Carthage/Build/
 ios/**/.swiftpm/
 ios/**/Package.resolved
+reports/

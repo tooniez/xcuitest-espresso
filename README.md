@@ -1,4 +1,4 @@
-# Mobile UI Automation Demo
+# XCUITest and Espresso 
 
 A demonstration project showcasing mobile test automation for Android and iOS using the **testing pyramid** (unit → integration → UI).
 
