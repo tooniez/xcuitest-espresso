@@ -1,0 +1,28 @@
+# Android build artifacts
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/captures/
+android/*.iml
+android/.idea/
+*.apk
+*.aab
+*.ap_
+*.dex
+
+# iOS / Xcode build artifacts
+ios/build/
+ios/DerivedData/
+ios/**/*.xcuserstate
+ios/**/*.xcuserdata/
+ios/**/xcuserdata/
+ios/**/*.moved-aside
+ios/**/*.hmap
+ios/**/*.ipa
+ios/**/*.dSYM
+ios/**/*.dSYM.zip
+ios/**/Pods/
+ios/**/Carthage/Build/
+ios/**/.swiftpm/
+ios/**/Package.resolved
